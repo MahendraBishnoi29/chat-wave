@@ -1,10 +1,6 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
+import { db } from "@/lib/db";
+import Button from "./components/ui/Button";
 
-const inter = Inter({ subsets: ["latin"] });
-
-export default function Home() {
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24"></div>
-  );
+export default async function Home() {
+  return <Button variant="ghost">Hello</Button>;
 }
