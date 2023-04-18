@@ -1,6 +1,7 @@
 import { Icon, Icons } from "@/components/Icons";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
@@ -26,7 +27,7 @@ const sidebarOptions: SidebarOptions[] = [
 ];
 
 const Layout = async ({ children }: LayoutProps) => {
-  const session = getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
   if (!session) notFound();
 
   return (
@@ -65,6 +66,26 @@ const Layout = async ({ children }: LayoutProps) => {
                   );
                 })}
               </ul>
+            </li>
+            <li className="-mx-6 mt-auto flex items-center">
+              <div className="flex flex-1 items-center gap-x-4 py-3 px-6 text-sm font-semibold leading-6 text-gray-900">
+                <div className="relative h-8 w-8 bg-gray-50">
+                  <Image
+                    fill
+                    referrerPolicy="no-referrer"
+                    className="rounded-full"
+                    src={session.user?.image || ""}
+                    alt="profilePic"
+                  />
+                </div>
+                <span className="sr-only">Your Profile</span>
+                <div className="flex flex-col">
+                  <span aria-hidden="true">{session.user?.name}</span>
+                  <span className="text-xs text-zinc-400" aria-hidden="true">
+                    {session.user?.email}
+                  </span>
+                </div>
+              </div>
             </li>
           </ul>
         </nav>
