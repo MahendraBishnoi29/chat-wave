@@ -69,7 +69,7 @@ const Layout = async ({ children }: LayoutProps) => {
               </ul>
             </li>
             <li className="-mx-6 mt-auto flex items-center">
-              <div className="flex flex-1 items-center gap-x-4 py-3 px-6 text-sm font-semibold leading-6 text-gray-900">
+              <div className="flex flex-1 pb-14 items-center gap-x-4 py-3 px-6 text-sm font-semibold leading-6 text-gray-900">
                 <div className="relative h-8 w-8 bg-gray-50">
                   <Image
                     fill
@@ -87,7 +87,7 @@ const Layout = async ({ children }: LayoutProps) => {
                   </span>
                 </div>
               </div>
-              <SignOutButton />
+              <SignOutButton className="mb-9" />
             </li>
           </ul>
         </nav>
