@@ -7,6 +7,7 @@ import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Button from "./ui/Button";
+import { toast } from "react-hot-toast";
 
 interface AddFriendButtonProps {}
 type FormData = z.infer<typeof addFriendValidator>;
@@ -31,6 +32,7 @@ const AddFriendButton: FC<AddFriendButtonProps> = ({}) => {
       });
 
       setSuccessState(true);
+      toast.success("Friend Request Sent");
     } catch (err) {
       if (err instanceof z.ZodError) {
         setError("email", { message: err.message });
@@ -67,9 +69,9 @@ const AddFriendButton: FC<AddFriendButtonProps> = ({}) => {
         <Button>Add</Button>
       </div>
       <p className="mt-1 text-sm text-red-600">{errors?.email?.message}</p>
-      {successState ? (
+      {/* {successState ? (
         <p className="mt-1 text-sm text-green-600">Friend Request Sent!</p>
-      ) : null}
+      ) : null} */}
     </form>
   );
 };
