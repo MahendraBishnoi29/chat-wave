@@ -20,7 +20,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
   );
 
   const acceptFriend = async (senderId: string) => {
-    await axios.post("/api/requests/accept", { id: senderId });
+    await axios.post("/api/friends/accept", { id: senderId });
     setFriendRequests((prev) =>
       prev.filter((request) => request.senderId !== senderId)
     );
@@ -29,7 +29,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
   };
 
   const denyFriend = async (senderId: string) => {
-    await axios.post("/api/requests/deny", { id: senderId });
+    await axios.post("/api/friends/deny", { id: senderId });
     setFriendRequests((prev) =>
       prev.filter((request) => request.senderId !== senderId)
     );
@@ -47,6 +47,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
             <UserPlus className="text-black" />
             <p className="font-md text-lg">{request.senderEmail}</p>
             <button
+              onClick={() => acceptFriend(request.senderId)}
               aria-label="accept request"
               className="w-8 h-8 bg-indigo-600 hover:bg-indigo-700 grid place-items-center rounded-full transition hover:shadow-md"
             >
@@ -54,6 +55,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
             </button>
 
             <button
+              onClick={() => denyFriend(request.senderId)}
               aria-label="deny request"
               className="w-8 h-8 bg-red-600 hover:bg-red-700 grid place-items-center rounded-full transition hover:shadow-md"
             >
