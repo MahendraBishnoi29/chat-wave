@@ -20,8 +20,13 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends }) => {
 
   return (
     <ul role="list" className="max-h-[25rem] overflow-y-auto -mx-2 space-y-1">
-      {friends.sort.map((friend) => {
-        return <div></div>;
+      {friends.sort().map((friend) => {
+        const unseenMessagesCount = unseenMessages.filter((unseenMsg) => {
+          return unseenMsg.id === friend.id;
+        }).length;
+        return <li key={friend.id}>
+          <a href={`/dashboard/chat/${}`}></a>
+        </li>
       })}
       frineds
     </ul>
