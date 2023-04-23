@@ -1,11 +1,13 @@
+import { chatHrefConstructor } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 
 interface SidebarChatListProps {
   friends: User[];
+  sessionId: string;
 }
 
-const SidebarChatList: FC<SidebarChatListProps> = ({ friends }) => {
+const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [unseenMessages, setUnseenMessages] = useState<Message[]>([]);
@@ -24,9 +26,16 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends }) => {
         const unseenMessagesCount = unseenMessages.filter((unseenMsg) => {
           return unseenMsg.id === friend.id;
         }).length;
-        return <li key={friend.id}>
-          <a href={`/dashboard/chat/${}`}></a>
-        </li>
+        return (
+          <li key={friend.id}>
+            <a
+              href={`/dashboard/chat/${chatHrefConstructor(
+                sessionId,
+                friend.id
+              )}`}
+            ></a>
+          </li>
+        );
       })}
       frineds
     </ul>
