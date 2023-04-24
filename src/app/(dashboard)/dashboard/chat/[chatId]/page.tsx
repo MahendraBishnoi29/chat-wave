@@ -1,3 +1,4 @@
+import Messages from "@/components/Messages";
 import { fetchRedis } from "@/helpers/redis";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -5,7 +6,6 @@ import { messageArrayValidator } from "@/lib/validations/messages";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import React, { FC } from "react";
 
 interface PageProps {
   params: {
@@ -50,7 +50,6 @@ const page = async ({ params }: PageProps) => {
 
   const chatPartnerId = user.id === userId1 ? userId2 : userId1;
   const chatPartner = (await db.get(`user:${chatPartnerId}`)) as User;
-  console.log("CHAT " + chatPartner);
   const initialMessages = await getChatMessages(chatId);
 
   return (
@@ -80,6 +79,8 @@ const page = async ({ params }: PageProps) => {
           </div>
         </div>
       </div>
+
+      <Messages />
     </div>
   );
 };
