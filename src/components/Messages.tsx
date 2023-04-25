@@ -1,14 +1,68 @@
-import React, { FC } from "react";
+"use client";
+import { cn } from "@/lib/utils";
+import { Message } from "@/lib/validations/messages";
+import { FC, useRef, useState } from "react";
 
-interface MessagesProps {}
+interface MessagesProps {
+  initialMessage: Message[];
+  sessionId: string;
+}
 
-const Messages: FC<MessagesProps> = ({}) => {
+const Messages: FC<MessagesProps> = ({ initialMessage, sessionId }) => {
+  const [messages, setMessage] = useState<Message[]>(initialMessage);
+  const scrollDownRef = useRef<HTMLDivElement | null>(null);
+
   return (
     <div
       id="messages"
-      className="felx h-full flex-1 flex-col-reverse gap-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
+      className="flex h-full flex-1 flex-col-reverse gap-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
     >
-      Messages
+      <div ref={scrollDownRef} />
+
+      {messages.map((message, i) => {
+        const isCurrentUser = message.senderId === sessionId;
+
+        const hasNextMessageFromNextUser =
+          messages[i - 1]?.senderId === messages[i].senderId;
+        return (
+          <div
+            key={`${message.id}-${message.timestamp}`}
+            className="chat-message"
+          >
+            <div
+              className={cn("flex items-end", {
+                "justify-end": isCurrentUser,
+              })}
+            >
+              <div
+                className={cn(
+                  "flex flex-col space-y-2 text-base max-w-xs mx-2",
+                  {
+                    "order-1 items-end": isCurrentUser,
+                    "order-2 items-start": !isCurrentUser,
+                  }
+                )}
+              >
+                <span
+                  className={cn("px-4 py-2 rounded-lg inline-block", {
+                    "bg-indigo-600 text-white": isCurrentUser,
+                    "bg-gray-200 text-gray-900": !isCurrentUser,
+                    "rounded-br-none":
+                      !hasNextMessageFromNextUser && isCurrentUser,
+                    "rounded-bl-none":
+                      !hasNextMessageFromNextUser && !isCurrentUser,
+                  })}
+                >
+                  {message?.text}{" "}
+                  <span className="ml-2 text-xs text-gray-400">
+                    {message?.timestamp}
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };
