@@ -1,3 +1,4 @@
+import ChatInput from "@/components/ChatInput";
 import Messages from "@/components/Messages";
 import { fetchRedis } from "@/helpers/redis";
 import { authOptions } from "@/lib/auth";
@@ -81,6 +82,7 @@ const page = async ({ params }: PageProps) => {
       </div>
 
       <Messages sessionId={session.user.id} initialMessage={initialMessages} />
+      <ChatInput />
     </div>
   );
 };
