@@ -18,9 +18,9 @@ async function getChatMessages(chatId: string) {
   try {
     const results: string[] = await fetchRedis(
       "zrange",
-      `chat-${chatId}:messages`,
+      `chat:${chatId}:messages`,
       0,
-      1
+      -1
     );
 
     const dbMessages = results.map((message) => JSON.parse(message) as Message);
