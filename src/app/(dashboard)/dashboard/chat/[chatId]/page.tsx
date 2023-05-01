@@ -50,7 +50,12 @@ const page = async ({ params }: PageProps) => {
   }
 
   const chatPartnerId = user.id === userId1 ? userId2 : userId1;
-  const chatPartner = (await db.get(`user:${chatPartnerId}`)) as User;
+
+  const chatPartner = (await fetchRedis(
+    "get",
+    `user:${chatPartnerId}`
+  )) as string;
+  const parsedChatPartner = JSON.parse(chatPartner) as User;
   const initialMessages = await getChatMessages(chatId);
 
   return (
@@ -62,8 +67,8 @@ const page = async ({ params }: PageProps) => {
               <Image
                 fill
                 referrerPolicy="no-referrer"
-                src={chatPartner?.image}
-                alt={`${chatPartner?.name} profile pic`}
+                src={parsedChatPartner?.image}
+                alt={`${parsedChatPartner?.name} profile pic`}
                 className="rounded-full"
               />
             </div>
@@ -72,17 +77,19 @@ const page = async ({ params }: PageProps) => {
           <div className="flex flex-col leading-tight">
             <div className="text-xl flex items-center">
               <span className="text-gray-700 mr-3 font-semibold">
-                {chatPartner?.name}
+                {parsedChatPartner?.name}
               </span>
             </div>
 
-            <span className="text-sm text-gray-600">{chatPartner?.email}</span>
+            <span className="text-sm text-gray-600">
+              {parsedChatPartner?.email}
+            </span>
           </div>
         </div>
       </div>
 
-      <Messages sessionId={session.user.id} initialMessage={initialMessages} />
-      <ChatInput chatPartner={chatPartner} chatId={chatId} />
+      <Messages sessionId={session.user.id} initialMessages={initialMessages} />
+      <ChatInput chatPartner={parsedChatPartner} chatId={chatId} />
     </div>
   );
 };
