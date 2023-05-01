@@ -4,12 +4,12 @@ import { Message } from "@/lib/validations/messages";
 import { FC, useRef, useState } from "react";
 
 interface MessagesProps {
-  initialMessage: Message[];
+  initialMessages: Message[];
   sessionId: string;
 }
 
-const Messages: FC<MessagesProps> = ({ initialMessage, sessionId }) => {
-  const [messages, setMessage] = useState<Message[]>(initialMessage);
+const Messages: FC<MessagesProps> = ({ initialMessages, sessionId }) => {
+  const [messages, setMessage] = useState<Message[]>(initialMessages);
   const scrollDownRef = useRef<HTMLDivElement | null>(null);
 
   return (
