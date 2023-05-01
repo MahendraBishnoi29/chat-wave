@@ -20,21 +20,21 @@ export async function POST(req: Request) {
 
     const friendId = session.user.id === userId1 ? userId2 : userId1;
 
-    const isInFriendList = (await fetchRedis(
+    const friendList = (await fetchRedis(
       "smembers",
       `user:${session.user.id}:friends`
     )) as string[];
-    const isFriend = isInFriendList.includes(friendId);
+    const isFriend = friendList.includes(friendId);
 
     if (!isFriend)
       return new Response("User is not your friend!", { status: 401 });
 
-    const sender = (await fetchRedis(
+    const rawSender = (await fetchRedis(
       "get",
       `user:${session.user.id}`
     )) as string;
 
-    const parsedSender = JSON.parse(sender) as User;
+    const sender = JSON.parse(rawSender) as User;
     const timestamp = Date.now();
 
     const messageData: Message = {
