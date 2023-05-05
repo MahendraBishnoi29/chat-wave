@@ -26,7 +26,12 @@ const FriendRequests: FC<FriendRequestsProps> = ({
       toPusherKey(`user:${sessionId}:incoming_friend_requests`)
     );
 
-    const friendRequestHandler = () => {};
+    const friendRequestHandler = ({
+      senderId,
+      senderEmail,
+    }: IncomingFriendRequest) => {
+      setFriendRequests((prev) => [...prev, { senderId, senderEmail }]);
+    };
 
     pusherClient.bind("incoming_friend_requests", friendRequestHandler);
 
@@ -36,7 +41,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
       );
       pusherClient.unbind("incoming_friend_requests", friendRequestHandler);
     };
-  }, []);
+  }, [sessionId]);
 
   const acceptFriend = async (senderId: string) => {
     await axios.post("/api/friends/accept", { id: senderId });
