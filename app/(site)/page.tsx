@@ -1,4 +1,5 @@
 import Image from "next/image";
+import AuthFrom from "./components/AuthFrom";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
           Sign In to your account
         </h2>
       </div>
+      <AuthFrom />
     </div>
   );
 }
