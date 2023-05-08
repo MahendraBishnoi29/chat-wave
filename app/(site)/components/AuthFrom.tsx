@@ -58,14 +58,28 @@ const AuthFrom = () => {
       <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           {variant === "REGISTER" && (
-            <Input id="name" label="Name" register={register} errors={errors} />
+            <Input
+              id="name"
+              label="Name"
+              register={register}
+              errors={errors}
+              disabled={loading}
+            />
           )}
-          <Input id="email" label="Email" register={register} errors={errors} />
+
+          <Input
+            id="email"
+            label="Email"
+            register={register}
+            errors={errors}
+            disabled={loading}
+          />
           <Input
             id="password"
             label="Password"
             type="password"
             register={register}
+            disabled={loading}
             errors={errors}
           />
           <div>
