@@ -3,10 +3,10 @@ import AuthFrom from "./components/AuthFrom";
 
 export default function Home() {
   return (
-    <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-100">
+    <div className="flex min-h-full flex-col justify-center pb-6 sm:px-7 lg:px-8 bg-gray-100">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <Image
-          className="mx-auto w-auto"
+          className="mx-auto w-auto my-0"
           alt="logo"
           height="100"
           width="200"
