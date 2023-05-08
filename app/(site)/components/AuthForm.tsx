@@ -4,8 +4,10 @@ import { BsGithub, BsGoogle } from "react-icons/bs";
 
 import Button from "@/app/components/Button";
 import Input from "@/app/components/inputs/Input";
+import axios from "axios";
 import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import AuthSocialButton from "./AuthSocialButton";
 
 type Variant = "LOGIN" | "REGISTER";
@@ -39,7 +41,10 @@ const AuthFrom = () => {
     setLoading(true);
 
     if (variant === "REGISTER") {
-      //ragister
+      axios
+        .post("/api/register", data)
+        .catch(() => toast.error("Error creating Account!"))
+        .finally(() => setLoading(false));
     }
 
     if (variant === "LOGIN") {
