@@ -9,6 +9,7 @@ import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import AuthSocialButton from "./AuthSocialButton";
+import { signIn } from "next-auth/react";
 
 type Variant = "LOGIN" | "REGISTER";
 
@@ -43,12 +44,29 @@ const AuthFrom = () => {
     if (variant === "REGISTER") {
       axios
         .post("/api/register", data)
-        .catch(() => toast.error("Error creating Account!"))
+        .then((res) => {
+          if (res.statusText === "OK") {
+            toast.success("Signed Up. You can login now");
+          }
+        })
+        .catch(() => toast.error("Email is already taken"))
         .finally(() => setLoading(false));
     }
 
     if (variant === "LOGIN") {
-      //next auth
+      signIn("credentials", {
+        ...data,
+        redirect: false,
+      })
+        .then((callback) => {
+          if (callback?.error) {
+            toast.error(callback?.error);
+          }
+          if (callback?.ok && !callback?.error) {
+            toast.success("Logged In");
+          }
+        })
+        .finally(() => setLoading(false));
     }
 
     // next social sign in
