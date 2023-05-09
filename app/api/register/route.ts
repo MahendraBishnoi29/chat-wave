@@ -13,6 +13,17 @@ export async function POST(request: Request) {
       });
     }
 
+    const isUserExist = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (isUserExist) {
+      return new NextResponse("Email already taken!", {
+        status: 409,
+      });
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
