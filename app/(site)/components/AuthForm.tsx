@@ -5,11 +5,11 @@ import { BsGithub, BsGoogle } from "react-icons/bs";
 import Button from "@/app/components/Button";
 import Input from "@/app/components/inputs/Input";
 import axios from "axios";
+import { signIn } from "next-auth/react";
 import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import AuthSocialButton from "./AuthSocialButton";
-import { signIn } from "next-auth/react";
 
 type Variant = "LOGIN" | "REGISTER";
 
@@ -68,12 +68,22 @@ const AuthFrom = () => {
         })
         .finally(() => setLoading(false));
     }
-
-    // next social sign in
   };
 
   const socialAction = (action: string) => {
     setLoading(true);
+
+    signIn(action, { redirect: false })
+      .then((callback) => {
+        if (callback?.error) {
+          toast.error(callback?.error + "something went wrong!");
+        }
+
+        if (callback?.ok && !callback?.error) {
+          toast.success("Logged In With GitHub");
+        }
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -84,6 +94,7 @@ const AuthFrom = () => {
             <Input
               id="name"
               label="Name"
+              required
               register={register}
               errors={errors}
               disabled={loading}
@@ -93,6 +104,7 @@ const AuthFrom = () => {
           <Input
             id="email"
             label="Email"
+            required
             register={register}
             errors={errors}
             disabled={loading}
@@ -101,6 +113,7 @@ const AuthFrom = () => {
             id="password"
             label="Password"
             type="password"
+            required
             register={register}
             disabled={loading}
             errors={errors}
@@ -130,7 +143,7 @@ const AuthFrom = () => {
             />
             <AuthSocialButton
               icon={BsGoogle}
-              onClick={() => socialAction("github")}
+              onClick={() => socialAction("google")}
             />
           </div>
         </div>
