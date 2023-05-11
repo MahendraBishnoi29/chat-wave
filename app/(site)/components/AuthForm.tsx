@@ -47,20 +47,21 @@ const AuthFrom = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setLoading(true);
 
     if (variant === "REGISTER") {
-      axios
-        .post("/api/register", data)
-        .then((res) => {
-          if (res?.statusText === "OK") {
-            toast.success("Signed Up. You can login now");
-          }
-        })
-        .then(() => signIn("credentials", data))
-        .catch(() => toast.error("Email is already taken"))
-        .finally(() => setLoading(false));
+      try {
+        const res = await axios.post("/api/register", data);
+        if (res?.statusText === "OK") {
+          toast.success("Signed Up. You can login now");
+        }
+        await signIn("credentials", data);
+      } catch (error) {
+        toast.error("Email is already taken");
+      } finally {
+        setLoading(false);
+      }
     }
 
     if (variant === "LOGIN") {
