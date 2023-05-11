@@ -5,8 +5,9 @@ import { BsGithub, BsGoogle } from "react-icons/bs";
 import Button from "@/app/components/Button";
 import Input from "@/app/components/inputs/Input";
 import axios from "axios";
-import { signIn } from "next-auth/react";
-import { useCallback, useState } from "react";
+import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
+import { useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import AuthSocialButton from "./AuthSocialButton";
@@ -14,6 +15,8 @@ import AuthSocialButton from "./AuthSocialButton";
 type Variant = "LOGIN" | "REGISTER";
 
 const AuthFrom = () => {
+  const session = useSession();
+  const router = useRouter();
   const [variant, setVariant] = useState<Variant>("LOGIN");
   const [loading, setLoading] = useState(false);
 
@@ -24,6 +27,12 @@ const AuthFrom = () => {
       setVariant("LOGIN");
     }
   }, [variant]);
+
+  useEffect(() => {
+    if (session?.status === "authenticated") {
+      router.push("/users");
+    }
+  }, [session?.status, router]);
 
   //react hook form
   const {
@@ -45,10 +54,11 @@ const AuthFrom = () => {
       axios
         .post("/api/register", data)
         .then((res) => {
-          if (res.statusText === "OK") {
+          if (res?.statusText === "OK") {
             toast.success("Signed Up. You can login now");
           }
         })
+        .then(() => signIn("credentials", data))
         .catch(() => toast.error("Email is already taken"))
         .finally(() => setLoading(false));
     }
@@ -63,6 +73,7 @@ const AuthFrom = () => {
             toast.error(callback?.error);
           }
           if (callback?.ok && !callback?.error) {
+            router.push("/users");
             toast.success("Logged In");
           }
         })
