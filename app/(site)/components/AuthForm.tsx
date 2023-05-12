@@ -54,7 +54,7 @@ const AuthFrom = () => {
       try {
         const res = await axios.post("/api/register", data);
         if (res?.statusText === "OK") {
-          toast.success("Signed Up. You can login now");
+          toast.success("Signed Up, Redirecting to conversation page..");
         }
         await signIn("credentials", data);
       } catch (error) {
