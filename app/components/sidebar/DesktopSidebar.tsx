@@ -1,7 +1,7 @@
 "use client";
 
 import useRoutes from "@/app/hooks/useRoutes";
-import React, { useState } from "react";
+import { useState } from "react";
 import DesktopItem from "./DesktopItem";
 
 type Props = {};
