@@ -1,12 +1,15 @@
 "use client";
 
 import useRoutes from "@/app/hooks/useRoutes";
+import { User } from "@prisma/client";
 import { useState } from "react";
 import DesktopItem from "./DesktopItem";
 
-type Props = {};
+type DesktopSidebarProps = {
+  currentUser: User;
+};
 
-const DesktopSidebar = (props: Props) => {
+const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ currentUser }) => {
   const [isOpen, setIsOpen] = useState();
   const routes = useRoutes();
 
@@ -26,6 +29,8 @@ const DesktopSidebar = (props: Props) => {
           ))}
         </ul>
       </nav>
+
+      <nav className="mt-4 flex flex-col justify-between items-center"></nav>
     </div>
   );
 };
