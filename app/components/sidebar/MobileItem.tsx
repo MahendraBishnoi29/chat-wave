@@ -27,7 +27,7 @@ const MobileItems: React.FC<DesktopItemProps> = ({
   return (
     <Link
       href={href}
-      onClick={onClick}
+      onClick={handleClick}
       className={clsx(
         "group flex gap-x-3 text-sm leading-6 font-semibold w-full justify-center p-4 text-gray-500 hover:text-black hover:bg-gray-200 transition duration-300 ease-in-out",
         active && "bg-gray-200 text-black"
