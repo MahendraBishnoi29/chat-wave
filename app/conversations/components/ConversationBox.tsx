@@ -1,11 +1,80 @@
 "use client";
 
-import { FC } from "react";
+import { FC, use, useCallback, useMemo } from "react";
+import { format } from "date-fns";
+import { FullConversationType } from "@/app/types";
+import useOtherUser from "@/app/hooks/useOtherUser";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import clsx from "clsx";
+import Avatar from "@/app/components/Avatar";
 
-interface ConversationBoxProps {}
+interface ConversationBoxProps {
+  data: FullConversationType;
+  selected?: boolean;
+}
 
-const ConversationBox: FC<ConversationBoxProps> = ({}) => {
-  return <div>ConversationBox</div>;
+const ConversationBox: FC<ConversationBoxProps> = ({ data, selected }) => {
+  const otherUser = useOtherUser(data);
+  const session = useSession();
+  const router = useRouter();
+
+  const handleClick = useCallback(() => {
+    router.push(`/conversation/${data?.id}`);
+  }, [data?.id, router]);
+
+  const lastMessage = useMemo(() => {
+    const messages = data.messages || [];
+    return messages[messages?.length - 1];
+  }, [data?.messages]);
+
+  const userEmail = useMemo(() => {
+    return session?.data?.user?.email;
+  }, [session?.data?.user?.email]);
+
+  const hasSeen = useMemo(() => {
+    if (!lastMessage) {
+      return false;
+    }
+
+    const seenArray = lastMessage?.seen || [];
+    if (!userEmail) {
+      false;
+    }
+
+    return seenArray?.filter((user) => user?.email === userEmail).length !== 0;
+  }, [lastMessage, userEmail]);
+
+  const lastMessageText = useMemo(() => {
+    if (lastMessage?.image) {
+      return "Sent an image";
+    }
+
+    if (lastMessage?.body) {
+      return lastMessage?.body;
+    }
+
+    return "Started a Conversation";
+  }, [lastMessage]);
+
+  return (
+    <div
+      onClick={handleClick}
+      className={clsx(
+        "w-full relative flex items-center space-x-3 hover:bg-neutral-100 rounded-lg transition cursor-pointer",
+        selected ? "bg-neutral-100" : "bg-white"
+      )}
+    >
+      <Avatar user={otherUser} />
+      <div className="min-w-0 flex-1">
+        <div className="focus:outline-none">
+          <div className="flex justify-between items-center mb-1">
+            <p className="">{data?.name || otherUser?.name}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ConversationBox;
