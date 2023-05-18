@@ -29,6 +29,7 @@ const Form: FC<FormProps> = ({}) => {
       conversationId,
     });
   };
+
   return (
     <div className="py-4 px-4 bg-white border-t flex items-center gap-2 lg:gap-6 w-full">
       <HiPhoto size={30} className="text-sky-500 cursor-pointer" />
