@@ -32,6 +32,7 @@ const ProfileDrawer: FC<ProfileDrawerProps> = ({ isOpen, data, onClose }) => {
     }
     return "Active";
   }, [data]);
+
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
