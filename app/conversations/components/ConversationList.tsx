@@ -28,13 +28,17 @@ const ConversationList: FC<ConversationListProps> = ({ initialItems }) => {
             <MdOutlineGroupAdd size={20} />
           </div>
         </div>
-        {items?.map((item) => (
-          <ConversationBox
-            key={item.id}
-            data={item}
-            selected={conversationId === item.id}
-          />
-        ))}
+        {items.length ? (
+          items?.map((item) => (
+            <ConversationBox
+              key={item.id}
+              data={item}
+              selected={conversationId === item.id}
+            />
+          ))
+        ) : (
+          <p>No chats found</p>
+        )}
       </div>
     </aside>
   );
