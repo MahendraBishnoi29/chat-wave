@@ -13,7 +13,7 @@ export async function POST(request: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     // validation
-    if (!isGroup && (!members || members?.length < 2 || !name)) {
+    if (isGroup && (!members || members?.length < 2 || !name)) {
       return new NextResponse("please provide all details to create a Group!", {
         status: 400,
       });
