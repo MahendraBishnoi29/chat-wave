@@ -1,5 +1,6 @@
 import Modal from "@/app/components/Modal";
 import Input from "@/app/components/inputs/Input";
+import Select from "@/app/components/inputs/Select";
 import { User } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -53,25 +54,25 @@ const GroupChatModal: FC<GroupChatModalProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="space-y-12">
+        <div className="space-y-1">
           <div className="border-b border-gray-900/10 pb-12">
             <h2 className="text-base font-semibold leading-7 text-gray-900">
               Create a group chat
             </h2>
-            <p className="mt-1 text-sm leading-6 text-gray-600">
+            <p className="text-sm leading-6 text-gray-600">
               Create a chat with more than 2 people.
             </p>
-            <div className="mt-1 flex flex-col gap-y-8">
+            <div className="mt-4 flex flex-col gap-y-7">
               <Input
                 register={register}
-                label="name"
+                label="Name"
                 id="name"
                 disabled={isLoading}
                 required
                 errors={errors}
               />
               <Select
-                disbled={isLoading}
+                disabled={isLoading}
                 label="Members"
                 options={users.map((user) => ({
                   value: user?.id,
