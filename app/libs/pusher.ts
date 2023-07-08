@@ -9,7 +9,7 @@ export const pusherServer = new PusherServer({
   useTLS: true,
 });
 
-export const pusherClien = new PusherClient(
+export const pusherClient = new PusherClient(
   process.env.NEXT_PUBLIC_PUSHER_KEY!,
   { cluster: "eu" }
 );
