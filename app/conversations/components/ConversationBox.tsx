@@ -1,14 +1,14 @@
 "use client";
 
-import { FC, useCallback, useMemo } from "react";
-import { format } from "date-fns";
-import { FullConversationType } from "@/app/types";
-import useOtherUser from "@/app/hooks/useOtherUser";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import clsx from "clsx";
 import Avatar from "@/app/components/Avatar";
 import AvatarGroup from "@/app/components/AvatarGroup";
+import useOtherUser from "@/app/hooks/useOtherUser";
+import { FullConversationType } from "@/app/types";
+import clsx from "clsx";
+import { format } from "date-fns";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { FC, useCallback, useMemo } from "react";
 
 interface ConversationBoxProps {
   data: FullConversationType;
